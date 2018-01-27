@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>API Testing</title>
+  </head>
+  <body>
+
+    <div class="container">
+      <h1>REST API Testing</h1>
+      <ul id="postList">
+
+      </ul>
+    </div>
+
+    <script>
+
+    function createNode(element) {
+        return document.createElement(element);
+    }
+
+    function append(parent, el) {
+      return parent.appendChild(el);
+    }
+
+    const ul = document.getElementById('postList');
+    const url = 'http://wordpress-api.local/wp-json/wp/v2/posts';
+    console.log(url);
+
+    fetch(url)
+      .then((resp) => resp.json())
+      .then(function(data) {
+        console.log(data);
+        let posts = data; // Get the results
+        return posts.map(function(post) { // Map through the results and for each run the code below
+          console.log(post);
+          let li = createNode('li'), //  Create the elements we need
+              span = createNode('span');
+          span.innerHTML = `<a href="${post.guid.link}">${post.title.rendered}</a> (ID: ${post.id})<br> ${post.content.rendered}`; // Make the HTML of our span to be the first and last name of our author
+          append(li, span);
+          append(ul, li);
+        })
+      })
+      .catch(function(error) {
+        console.log(error);
+      });   
+      </script>
+
+    
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>
