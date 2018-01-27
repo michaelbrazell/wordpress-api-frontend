@@ -10,14 +10,21 @@
   <body>
 
     <div class="container">
-      <h1>REST API Testing</h1>
-      <ul id="postList">
-
-      </ul>
+      <h1 class="mb-2 mt-2">REST API Testing</h1>
+      <div class="row" id="post-list">
+        
+      </div>
     </div>
 
-    <script>
+    <!-- <img class="card-img-top" src="..." alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title">Card title</h5>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <a href="#" class="btn btn-primary">Go somewhere</a>
+  </div> -->
 
+    <script>
+    
     function createNode(element) {
         return document.createElement(element);
     }
@@ -26,22 +33,21 @@
       return parent.appendChild(el);
     }
 
-    const ul = document.getElementById('postList');
+    const ul = document.getElementById('post-list');
     const url = 'http://wordpress-api.local/wp-json/wp/v2/posts';
-    console.log(url);
 
     fetch(url)
       .then((resp) => resp.json())
       .then(function(data) {
-        console.log(data);
         let posts = data; // Get the results
         return posts.map(function(post) { // Map through the results and for each run the code below
-          console.log(post);
-          let li = createNode('li'), //  Create the elements we need
-              span = createNode('span');
-          span.innerHTML = `<a href="${post.guid.link}">${post.title.rendered}</a> (ID: ${post.id})<br> ${post.content.rendered}`; // Make the HTML of our span to be the first and last name of our author
-          append(li, span);
-          append(ul, li);
+          let postItem = createNode('div'), //  Create the elements we need
+              card = createNode('div');
+          postItem.className += "col-xs-12 col-sm-6 col-md-4 post-item mb-5 d-flex align-items-stretch";
+          card.className += "card";
+          card.innerHTML = `<div class="card-body"><div class="card-title"><h4>${post.title.rendered}</h4></div><p class="card-text">${post.excerpt.rendered}</p><a href="${post.link}" class="btn btn-primary">Read more</a></div></a>`;
+          append(postItem, card);
+          append(ul, postItem);
         })
       })
       .catch(function(error) {
